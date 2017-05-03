@@ -1,0 +1,21 @@
+{
+    "name": "uhi67/UMenu",
+    "description": "Universal menu for Yii2",
+    "type": "yii2-extension",
+    "license": "GNU",
+    "authors": [
+        {
+            "name": "uhi67",
+            "email": "uherkovich.peter@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "uhi67\\UMenu\\": "src"
+        }
+    }
+}

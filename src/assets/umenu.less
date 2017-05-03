@@ -1,0 +1,50 @@
+/* --------------------
+	umenu.less
+----------------------- */
+.listbutton {
+	padding: 3px;
+	background-color: @blackblue;
+	color: #eee;
+	margin-top: 2px;
+	max-width: 160px; 
+	a {
+		background-color: inherit;
+		color: inherit;
+		text-decoration: none;
+	}
+	&:hover { /* disabled elõtt - nem mindegy */
+		background-color: lighten(saturate(@blackblue, 15%), 15%);
+		color: #fff;
+	}
+	&.disabled {
+		background-color: #666;
+		color: #888;
+		a {
+			cursor:text;
+		}
+		span.glyphicon {
+			color: #aaa;
+			cursor: text;
+			background-color: #666;
+		}
+	}
+}
+
+ul.menu {
+	li {
+		.listbutton;
+	}
+}
+
+dl.menu {
+	margin-bottom: 4px;
+	dt {
+		font-size: 1.1em;
+		.listbutton;
+	}
+	dd {
+		font-size: 1em;
+		font-style: normal;
+		margin-bottom: 5px;
+	}
+}

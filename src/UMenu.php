@@ -3,7 +3,8 @@
 namespace uhi67\umenu;
 
 use yii\base\Object;
-use \yii\helpers\ArrayHelper;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 
 class UMenu extends Object {
 	/**

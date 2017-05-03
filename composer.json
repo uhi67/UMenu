@@ -1,5 +1,5 @@
 {
-    "name": "uhi67/UMenu",
+    "name": "uhi67/umenu",
     "description": "Universal menu for Yii2",
     "type": "yii2-extension",
     "license": "GNU",
@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "uhi67\\UMenu\\": "src"
+            "uhi67\\umenu\\": "src"
         }
     }
 }

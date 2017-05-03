@@ -7,11 +7,11 @@ The preferred way to install this extension is through composer.
 
 To install, either run
 
-    composer require uhi67/umenu "1.*" 
+    composer require uhi67/umenu "1.0.*" 
 
 or add
 
-    "uhi67/umenu" : "1.*"
+    "uhi67/umenu" : "1.0.*"
 
 or clone form github
 

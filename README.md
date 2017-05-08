@@ -1,5 +1,6 @@
 # UMenu
 Universal menu for Yii
+With footer form support in gridview
 
 # Installation
 
@@ -18,6 +19,8 @@ or clone form github
     git clone https://github.com/uhi67/umenu
     
 # Usage
+
+## Basic menu generating
 
 In controller action, use
 
@@ -55,8 +58,23 @@ In controller action, use
 		],
 	];
 
-In view use
+In your view use
 
+	uhi67\umenu\UMenuAsset::register($this); // or put this into the global layout 
 	<?= UMenu::showMenu($titlemenu); ?>
 
 See UMenu::showMenu for detailed menu properties.
+
+## Using context menu functions in GridView
+
+	// Indicate using of context-menu and/or footer-form in class 
+	 <?= GridView::widget([ 
+		'options' => ['class'=>'grid context-menu footer-form'],
+		'showFooter' => true,
+		'footerRowOptions' => ['class'=>'hidden'],	// must be hidden first
+		'dataProvider' => $roles,
+		...
+	?>
+	...
+
+...

@@ -15,15 +15,16 @@ class UMenu extends Object {
 	 * 			caption: caption text os item (after icon is exists)
 	 * 			icon: icon before or instead of caption (image filename or glyphicon-* or fa-*)
 	 * 			title: html title attribute
-	 * 			class: html class of <a> or <span>. default is none
+	 * 			class: html class of <a> or <span>. default is none.
 	 * 			action: url for <a> or javascript:function for <span>
-	 * 			enabled: if false, button is not clickable and gray. html class will contain "disabled" -- TODO
+	 * 			enabled: if false, button is not clickable and gray. html class will contain "disabled". Default is true (enabled).
 	 * 			visible: boolean, default true
-	 * 			group: if true, button is visible only when selection is present in connected grid.		-- TODO
+	 * 			group: if true, button is visible only when selection is present in connected grid.
 	 * 			display: input|button|normal(default)
 	 * 			name: name of embedded input field or submit button
 	 * 			value: value of embedded input field or submit button
-	 * 			confirm: text of confirmation 															-- TODO
+	 * 			confirm: text of confirmation
+	 * 			data: array of data-* items' values
 	 * 			items: subitems of multilevel menu
 	 * @param string $class -- default class of ul (class property will override it)
 	 * @param string $wrapper -- class of wrapper div if given, default no wrapper 
@@ -49,6 +50,7 @@ class UMenu extends Object {
 					$group = ArrayHelper::getValue($item, 'group');
 					$confirm = ArrayHelper::getValue($item, 'confirm');
 					$items = ArrayHelper::getValue($item, 'items');
+					$data = ArrayHelper::getValue($item, 'data');
 
 					if(!$visible) continue;
 					
@@ -60,10 +62,12 @@ class UMenu extends Object {
 
 					$confirmx = $confirm ? "if(!confirm('$confirm')) return false; " : '';
 					
-					$options = array();
+					$options = [];
 					if(isset($item['title'])) $options['title'] = $item['title'];
-					if(as_array($class)) $class = implode(' ', $class);
-					if($class) $options['class'] = $class;
+					if(is_array($class)) $class = implode(' ', $class);
+					$options['class'] = 'menuitem';
+					if($class) $options['class'] .= ' '.$class;
+					if(is_array($data)) foreach($data as $k=>$v) $options['data-'.$k] = $v; 
 
 					if($icon) {
 						if(substr($icon, 0, 10)=='glyphicon-') $iconx = '<span class="glyphicon '.$icon.'"></span>';

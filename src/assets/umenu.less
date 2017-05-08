@@ -1,9 +1,14 @@
 /* --------------------
 	umenu.less
 ----------------------- */
+// Default colors if app-colors is not available
+@blackcolor: #002244;
+
+@import (optional) "../../css/app-colors.less";
+
 .listbutton {
 	padding: 3px;
-	background-color: @blackblue;
+	background-color: @blackcolor;
 	color: #eee;
 	margin-top: 2px;
 	max-width: 160px; 
@@ -13,7 +18,7 @@
 		text-decoration: none;
 	}
 	&:hover { /* disabled elõtt - nem mindegy */
-		background-color: lighten(saturate(@blackblue, 15%), 15%);
+		background-color: lighten(saturate(@blackcolor, 15%), 15%);
 		color: #fff;
 	}
 	&.disabled {
@@ -47,4 +52,8 @@ dl.menu {
 		font-style: normal;
 		margin-bottom: 5px;
 	}
+}
+
+button.footer-form-close {
+	margin-left: 0px;
 }

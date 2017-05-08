@@ -7,6 +7,17 @@ class UMenuAsset extends AssetBundle
 {
     public $sourcePath = '@vendor/uhi67/umenu/src/assets';
     public $css = [
-        'umenu.css',
+        'umenu.less',
     ];
+    public $js = [
+    	'umenu.js',
+	];
+    public $depends = [
+        'yii\web\YiiAsset',
+        'yii\bootstrap\BootstrapAsset',
+        'yii\web\JqueryAsset',
+	];
+	public $publishOptions = [
+		'forceCopy' => YII_ENV_DEV, 
+	];
 }

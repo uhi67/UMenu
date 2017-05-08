@@ -58,7 +58,12 @@ class UMenu extends Object {
 					if($disabled) $liclass[] = 'disabled';
 					if($group) $liclass[] = 'group';
 
-					$confirmx = $confirm ? "if(!confirm('$confirm')) return false; " : ''; 
+					$confirmx = $confirm ? "if(!confirm('$confirm')) return false; " : '';
+					
+					$options = array();
+					if(isset($item['title'])) $options['title'] = $item['title'];
+					if(as_array($class)) $class = implode(' ', $class);
+					if($class) $options['class'] = $class;
 
 					if($icon) {
 						if(substr($icon, 0, 10)=='glyphicon-') $iconx = '<span class="glyphicon '.$icon.'"></span>';
@@ -70,30 +75,28 @@ class UMenu extends Object {
 					
 					if($display=='input') {
 						$liclass[] = 'form form-input';
-						$disabledx = $disabled ? 'disabled="disabled' : '';
-						$s = $caption.' <input type="text" name="'.$name.'" value="'.$value.'" '.$disabledx.' />'; 
+						if($disabled) $options['disabled']='disabled';
+						$options = array_merge($options, ['type'=>'text', 'name'=>$name, 'value'=>$value]);
+						$s = $caption.' '.Html::tag('input', '', $options);
 					}
 					elseif($display=='button') {
 						$liclass[] = 'form form-button';
-						$disabledx = $disabled ? 'disabled="disabled' : '';
-						$s = '<input type="submit" name="'.$name.'" value="$caption" '.$disabledx.' onclick="$confirmx this.value=\''.$value.'\'"/>'; 
+						if($disabled) $options['disabled']='disabled';
+						$options = array_merge($options, ['type'=>'submit', 'name'=>$name, 'value'=>$caption, 'onclick'=>"$confirmx this.value='$value'"]);
+						$s = Html::tag('input', '', $options);
 					}
 					elseif($item===null) {
 						continue;
 					}
 					elseif($disabled) {
-						$titlex = isset($item['title']) ? 'title="'.$item['title'].'"' : '';
-						$s = "<span $titlex>".$iconx.$caption.'</span>'; // $options;
+						$s = Html::tag('span', $iconx.$caption, $options);
 					}
 					else { // Normál menupont
 						if(substr($action, 0, 11)=='javascript:') {
-							$titlex = isset($item['title']) ? 'title="'.$item['title'].'"' : '';
-							$clickx = 'onclick="'.$confirmx.substr($action,11).'"'; 
-							$s = "<span $clickx $titlex>".$iconx.$caption.'</span>'; // $options;
+							$options['onclick'] = $confirmx.substr($action,11);
+							$s = Html::tag('span', $iconx.$caption, $options); 
 						}
 						else {
-							$options = [];
-							if(isset($item['title'])) $options['title'] = $item['title'];
 							if($confirm) $options['onclick'] = "confirm('$confirm')"; 
 							$s = Html::a($iconx.$caption, $action, $options);
 						}

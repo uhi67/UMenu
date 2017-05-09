@@ -61,17 +61,25 @@ In controller action, use
 In your view use
 
 	uhi67\umenu\UMenuAsset::register($this); // or put this into the global layout 
-	<?= UMenu::showMenu($titlemenu); ?>
+	UMenu::showMenu($titlemenu);
 
 See UMenu::showMenu for detailed menu properties.
 
 ## Context menu and footer form functions in GridView
 
+Context menu is a menu associated to a gridview or any similar list object.
+Context menu may cointain group items, which are visible only if one or more ites are selected in the associated gridview.
+GridView association is automatic if you put the menu in the same form with gridView.
+
+Footer form is a hidden form in the footer row of a gridView object.
+A context menu button shows the form. The form contains a close button which hides it again.
+Actions with hidden footer-form do not send footer-form fields (and nor validation is performed as well). 
+
 In your controller class use
 
 		return [
 			...
-			'contextmenu' => $can_grant ? [
+			'contextmenu' => [
 				[
 					'enabled' => $can_grant, 
 					'caption' => Yii::t('app', 'Add'),
@@ -133,6 +141,5 @@ In your view use
 	]);
 	?>
 	<?= Html::activeHiddenInput($roleForm, 'userid') ?>
-	<?php ActiveForm::end() ?>
 	<?= \uhi67\umenu\UMenu::showMenu($bottommenu, 'bottom-menu context-menu', 'bottom-menu-box'); ?>
-
+	<?php ActiveForm::end() ?>

@@ -27,7 +27,7 @@ class UMenu extends Object {
 	 * 			name: name of embedded input field or submit button
 	 * 			value: value of embedded input field or submit button
 	 * 			confirm: if given, the text of confirmation before performing action
-	 * 			data: array of data-* items' values
+	 * 			data: array of data-* items' values. data-action mut be set as url for group button action
 	 * 			items: subitems of multilevel menu
 	 * 			disposable: disables itself on click (default on actions)
      */
@@ -48,23 +48,7 @@ class UMenu extends Object {
 	/**
 	 * Renders a menu
 	 * 
-	 * @param array $menu [['caption'=>caption, 'action'=>url],...]
-	 * 		Array of menu items. Item properties:
-	 * 			caption: caption text os item (after icon is exists)
-	 * 			icon: icon before or instead of caption (image filename or glyphicon-* or fa-*)
-	 * 			title: html title attribute
-	 * 			class: html class of <a> or <span>. default is none.
-	 * 			action: url for <a> or javascript:function for <span>
-	 * 			enabled: if false, button is not clickable and gray. html class will contain "disabled". Default is true (enabled).
-	 * 			visible: boolean, default true
-	 * 			group: if true, button is visible only when selection is present in connected grid.
-	 * 			display: input|button|normal(default)
-	 * 			name: name of embedded input field or submit button
-	 * 			value: value of embedded input field or submit button
-	 * 			confirm: text of confirmation
-	 * 			data: array of data-* items' values
-	 * 			items: subitems of multilevel menu
-	 * 			disposable: disables itself on click (default on actions)
+	 * @param array $menu [['caption'=>caption, 'action'=>url],...] see $item property of class for details 
 	 * @param string $class -- class of ul (default is 'menu')
 	 * @param string $wrapper -- class of wrapper div if given, default no wrapper at all.
 	 * @return string

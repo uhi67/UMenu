@@ -27,7 +27,7 @@ In controller action, use
     return [
         'model' => $this->findModel($id),
         'mode' => $editmode ? 'edit' : 'view',
-		'titlemenu' => [
+		'titleMenuItems' => [
 			[
 				'visible' => $editmode, 
 				'enabled' => Yii::$app->user->can('/contract/update'), 
@@ -61,7 +61,7 @@ In controller action, use
 In your view use
 
 	uhi67\umenu\UMenuAsset::register($this); // or put this into the global layout 
-	UMenu::showMenu($titlemenu);
+	UMenu::showMenu($titleMenuItems, 'title-menu');
 
 See UMenu::showMenu for detailed menu properties.
 
@@ -77,22 +77,26 @@ Actions with hidden footer-form do not send footer-form fields (and nor validati
 
 In your controller class use
 
+		// action on selection
+		$selection = Yii::$app->request->post('selection');		
+
+		// list action
 		return [
 			...
-			'contextmenu' => [
+			'$contextMenuItems' => [
 				[
 					'enabled' => $can_grant, 
 					'caption' => Yii::t('app', 'Add'),
 					'icon' => 'glyphicon-plus', 
-					'class' => 'footer-form-show', 
+					'class' => 'footer-form-show', 		// no action needed: button will show the footer form
 					'title' => '...',
 				],
 				[
 					'enabled'=>$can_grant, 
 					'caption' => Yii::t('app', 'Delete'), 
 					'icon'=>'glyphicon-trash',
-					'data' => ['action'=>'/user/delrole/'.$id], // Action will get keys of the selected rows
-					'group'=>1, // Indicates this button is visible only and operates on selected rows. 
+					'data' => ['action'=>'...'], // Action will get keys of the selected rows (see above)
+					'group'=>1, 	// Indicates this button is visible only and operates on selected rows. Uses data-action to send the form to
 					'title' => '...',
 				],
 			],
@@ -112,16 +116,13 @@ In your view use
 	 <?= GridView::widget([ 
 		'options' => ['class'=>'grid context-menu footer-form'],
 		'showFooter' => true,
-		'footerRowOptions' => ['class'=>'hidden'],	// must be hidden first
+		'footerRowOptions' => ['class'=>'footer-form'],	// must be hidden first
 		...
 		'columns' => [
 			// First column
 			[
 				'class' => 'yii\grid\CheckboxColumn',
-				'footer' => Html::button(Html::tag('span', '', ['class' => 'glyphicon glyphicon-remove footer-form-close']), ['id'=>'button-close-newrole']),
-				'headerOptions' => ['class'=>'column-center w40'],
-				'contentOptions' => ['class'=>'column-center w40'],
-				'footerOptions' => ['class'=>'column-center w40'],
+				'footer' => Html::button(Html::tag('span', '', ['class' => 'glyphicon glyphicon-remove footer-form-close'])),
 				'visible'=>...,	// If user has permission on any group action
 			],
 			// Other columns
@@ -141,5 +142,5 @@ In your view use
 	]);
 	?>
 	<?= Html::activeHiddenInput($roleForm, 'userid') ?>
-	<?= \uhi67\umenu\UMenu::showMenu($bottommenu, 'bottom-menu context-menu', 'bottom-menu-box'); ?>
+	<?= \uhi67\umenu\UMenu::showMenu($contextMenuItems, 'context-menu'); ?>
 	<?php ActiveForm::end() ?>

@@ -50,7 +50,8 @@ $(function() {
 	
 	// Updates context-menu 'group' items on selection change
 	var $grid = $('.grid.context-menu');
-	$('input[name="selection_all"], input[name="selection[]"]', $grid).change(function(){
+	$('input[name="selection_all"], input[name="selection[]"]', $grid).change(function() {
+		console.log('update contex-menu visibility');
 		var keys = $grid.yiiGridView('getSelectedRows');
 		var $groupitems = $grid.parent().parent().find('.context-menu li.group');
 		if(keys.length) $groupitems.show(); else $groupitems.hide();
@@ -61,7 +62,7 @@ $(function() {
 		console.log('group action');
 		
 		var keys = $grid.yiiGridView('getSelectedRows');
-		var $form = $('form', $(this).closest('.context-menu').parent().parent().parent());
+		var $form = $(this).closest('form');
 		
 		console.log('keys: '+keys + ' form:', $form);
 		$form.get(0).action = $form.get(0).action = $(this).data('action');	
@@ -72,7 +73,7 @@ $(function() {
 	$('.footer-form-show').click(function() {
 		console.log('show footer form');
 		var $button = $(this);
-		var $trfoot = $('form .table tfoot tr', $button.closest('.context-menu').parent().parent()); 
+		var $trfoot = $('.table tfoot tr', $button.closest('form')); 
 		$trfoot.first().removeClass('hidden');
 		// Enable all inputs in footer-form 
 		$('input, select, textarea', $trfoot).removeAttr('disabled');

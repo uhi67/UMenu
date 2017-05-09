@@ -5,7 +5,7 @@
  * - gridview footer input form  
  */
 
-console.log('umenu.js v1.0.3');
+console.log('umenu.js v1.0.1.2');
 
 jQuery.fn.extend({
 	// disables a button/menu item with style and click
@@ -21,6 +21,10 @@ jQuery.fn.extend({
 });
 
 $(function() {
+	// Disables hidden footer form at start
+	var $trfoot = $('div.footer-form tfoot tr'); 
+	$('input, select, textarea', $trfoot).attr('disabled', 'disabled');
+	
 	// Dispose used item
 	$('ul.umenu .disposable').click(function(){
 		$(this).disable();
@@ -34,7 +38,7 @@ $(function() {
 	// Drop-down menu
 	$('ul.dropdown').each(function() {
 		var $submenu = $(this);
-		console.log('submenu: ',$submenu);
+		//console.log('submenu: ',$submenu);
 		$submenu.closest('li').hover(
 			function(){
 				console.log('hover: ',$submenu);
@@ -68,18 +72,21 @@ $(function() {
 	$('.footer-form-show').click(function() {
 		console.log('show footer form');
 		var $button = $(this);
-		$('form .table tfoot tr.input-add', $button.closest('.context-menu').parent().parent()).first().removeClass('hidden');
+		var $trfoot = $('form .table tfoot tr', $button.closest('.context-menu').parent().parent()); 
+		$trfoot.first().removeClass('hidden');
 		// Enable all inputs in footer-form 
+		$('input, select, textarea', $trfoot).removeAttr('disabled');
 		
 		$button.disable();
 	});
 	
 	// Close input row (gridview footer)
 	$('.footer-form-close').click(function() {
-		$(this).closest('tr').addClass('hidden');
+		var $trfoot = $(this).closest('tr'); 
+		$trfoot.addClass('hidden');
 		var $button = $('.footer-form-show', $(this).closest('form').parent());
 		$button.enable();
 		// Disable all inputs to ensure to pass validation on footer-form 
-
+		$('input, select, textarea', $trfoot).attr('disabled', 'disabled');
 	});
 });

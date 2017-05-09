@@ -52,7 +52,7 @@ class UMenu extends Object {
 					$confirm = ArrayHelper::getValue($item, 'confirm');
 					$items = ArrayHelper::getValue($item, 'items');
 					$data = ArrayHelper::getValue($item, 'data');
-					$disposable = ArrayHelper::getValue($item, 'disposable', true);
+					$disposable = ArrayHelper::getValue($item, 'disposable', !isset($item['items']));
 
 					if(!$visible) continue;
 					

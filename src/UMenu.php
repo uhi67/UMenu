@@ -26,6 +26,7 @@ class UMenu extends Object {
 	 * 			confirm: text of confirmation
 	 * 			data: array of data-* items' values
 	 * 			items: subitems of multilevel menu
+	 * 			disposable: disables itself on click (default on urls)
 	 * @param string $class -- default class of ul (class property will override it)
 	 * @param string $wrapper -- class of wrapper div if given, default no wrapper 
 	 * @return string
@@ -34,7 +35,7 @@ class UMenu extends Object {
 		$r = ''; $q = '';
 		if($menu) {
 			if($wrapper) $r = '<div class="'.$wrapper.'">';
-			$r .= '<ul class="'.$class.'">';
+			$r .= '<ul class="umenu '.$class.'">';
 			$last = max(array_keys($menu));
 			foreach($menu as $i=>$item) {
 				if(is_numeric($i)) {
@@ -51,6 +52,7 @@ class UMenu extends Object {
 					$confirm = ArrayHelper::getValue($item, 'confirm');
 					$items = ArrayHelper::getValue($item, 'items');
 					$data = ArrayHelper::getValue($item, 'data');
+					$disposable = ArrayHelper::getValue($item, 'disposable', true);
 
 					if(!$visible) continue;
 					
@@ -66,8 +68,9 @@ class UMenu extends Object {
 					if(isset($item['title'])) $options['title'] = $item['title'];
 					if(is_array($class)) $class = implode(' ', $class);
 					$options['class'] = 'menuitem';
+					if($disposable) $options['class'] .= ' disposable';
 					if($class) $options['class'] .= ' '.$class;
-					if(is_array($data)) foreach($data as $k=>$v) $options['data-'.$k] = $v; 
+					if(is_array($data)) foreach($data as $k=>$v) $options['data-'.$k] = $v;
 
 					if($icon) {
 						if(substr($icon, 0, 10)=='glyphicon-') $iconx = '<span class="glyphicon '.$icon.'"></span>';

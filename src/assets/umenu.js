@@ -21,6 +21,11 @@ jQuery.fn.extend({
 });
 
 $(function() {
+	// Dispose used item
+	$('ul.umenu .disposable').click(function(){
+		$(this).disable();
+	});
+	
 	// Disabled menu items
 	$('li.disabled a, dt.disabled a, a.disabled').each(function() {
 		$(this).click(function() {return false;});

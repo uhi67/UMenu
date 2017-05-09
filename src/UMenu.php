@@ -93,14 +93,8 @@ class UMenu extends Object {
 					if($disposable) $options['class'] .= ' disposable';
 					if($class) $options['class'] .= ' '.$class;
 					if(is_array($data)) foreach($data as $k=>$v) $options['data-'.$k] = $v;
-
-					if($icon) {
-						if(substr($icon, 0, 10)=='glyphicon-') $iconx = '<span class="glyphicon '.$icon.'"></span>';
-						else if(substr($icon, 0, 3)=='fa-') $iconx = '<i class="fa '.$icon.'"></i>';
-						else $iconx = '<img class="icon" src="/img/'.$icon.'" />';
-					}
-					else 
-						$iconx = '';
+					
+					$iconx = self::iconItem($icon);
 					
 					if($display=='input') {
 						$liclass[] = 'form form-input';
@@ -152,5 +146,16 @@ class UMenu extends Object {
 			if($wrapper) $r .= '</div class="'.$wrapper.'">';
 		}
 		return $r . $q;
+	}
+	
+	static public function iconItem($icon) {
+		if($icon=='') return '';
+		if(substr($icon, 0, 10)=='glyphicon-') 
+			$iconx = '<span class="glyphicon '.$icon.'"></span>';
+		else if(substr($icon, 0, 3)=='fa-') 
+			$iconx = '<i class="fa '.$icon.'"></i>';
+		else 
+			$iconx = '<img class="icon" src="/img/'.$icon.'" />';
+		return $iconx;
 	}	
 }

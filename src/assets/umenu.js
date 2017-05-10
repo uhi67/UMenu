@@ -24,6 +24,7 @@ $(function() {
 	// Disables hidden footer form at start
 	var $trfoot = $('div.footer-form tfoot tr'); 
 	$('input, select, textarea', $trfoot).attr('disabled', 'disabled');
+	$trfoot.hide();
 	
 	// Dispose used item
 	$('ul.umenu .disposable').click(function(){
@@ -65,7 +66,12 @@ $(function() {
 		var $form = $(this).closest('form');
 		
 		console.log('keys: '+keys + ' form:', $form);
-		$form.get(0).action = $form.get(0).action = $(this).data('action');	
+		var action = $(this).data('action');
+		if(action) $form.get(0).action = $form.get(0).action = action;
+		
+		var group = $(this).data('group');
+		if(group) $('input.data-group').val(group);
+		
 		$form.submit();
 	});
 	
@@ -74,7 +80,7 @@ $(function() {
 		console.log('show footer form');
 		var $button = $(this);
 		var $trfoot = $('.table tfoot tr', $button.closest('form')); 
-		$trfoot.first().removeClass('hidden');
+		$trfoot.show();
 		// Enable all inputs in footer-form 
 		$('input, select, textarea', $trfoot).removeAttr('disabled');
 		
@@ -84,7 +90,7 @@ $(function() {
 	// Close input row (gridview footer)
 	$('.footer-form-close').click(function() {
 		var $trfoot = $(this).closest('tr'); 
-		$trfoot.addClass('hidden');
+		$trfoot.hide();
 		var $button = $('.footer-form-show', $(this).closest('form').parent());
 		$button.enable();
 		// Disable all inputs to ensure to pass validation on footer-form 

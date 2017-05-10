@@ -22,14 +22,17 @@ class UMenu extends Object {
 	 * 			action: url for <a> or javascript:function for <span>
 	 * 			enabled: if false, button is not clickable and gray. html class will contain "disabled". Default is true (enabled).
 	 * 			visible: boolean, default true
-	 * 			group: if true, button is visible only when selection is present in connected grid.
+	 * 			group: if not empty, button is visible only when selection is present in connected grid. The button will submit the form, and send this value.
 	 * 			display: input|button|normal(default)
 	 * 			name: name of embedded input field or submit button
 	 * 			value: value of embedded input field or submit button
 	 * 			confirm: if given, the text of confirmation before performing action
-	 * 			data: array of data-* items' values. data-action mut be set as url for group button action
+	 * 			data: array of data-* items' values. data-action may be set as url for group button action
 	 * 			items: subitems of multilevel menu
 	 * 			disposable: disables itself on click (default on actions)
+	 * 	Extra attributes (non-numeric indices)
+	 * 		form (boolean): the menu will be wrapped into form
+	 * 		action (string): the action of the form
      */
 	public $items = [];
 	/**
@@ -53,11 +56,10 @@ class UMenu extends Object {
 	 * @param string $wrapper -- class of wrapper div if given, default no wrapper at all.
 	 * @return string
 	 */
-	static public function showMenu($menu, $class='menu', $wrapper=null) {
-		$r = ''; $q = '';
+	static public function showMenu($menu, $menuclass='menu', $wrapper=null) {
+		$r = '';
 		if($menu) {
-			if($wrapper) $r = '<div class="'.$wrapper.'">';
-			$r .= '<ul class="umenu '.$class.'">';
+			$r = Html::tag('input', '', ['type'=>'hidden', 'class'=>'data-group', 'name'=>'group']);
 			$last = max(array_keys($menu));
 			foreach($menu as $i=>$item) {
 				if(is_numeric($i)) {
@@ -93,6 +95,7 @@ class UMenu extends Object {
 					if($disposable) $options['class'] .= ' disposable';
 					if($class) $options['class'] .= ' '.$class;
 					if(is_array($data)) foreach($data as $k=>$v) $options['data-'.$k] = $v;
+					if($group) $options['data-group'] = $group;
 					
 					$iconx = self::iconItem($icon);
 					
@@ -129,31 +132,30 @@ class UMenu extends Object {
 						$s .= self::showMenu($items, 'dropdown');
 					}
 
-					$liclassx = $liclass ? ' class="'.implode(' ', $liclass).'"' : '';
-					$displayx = $group ? ' style="display:none"' : ''; 
-					$r .= '<li'.$displayx.$liclassx.'>' . $s . '</li>';
+					$lioptions = [];
+					if(count($liclass)) $lioptions['class'] = implode(' ', $liclass);
+					if($group) $lioptions['style'] = "display:none";					
+					$r .= Html::tag('li', $s, $lioptions);
 				}
-				else {
-					if($i=='form') {
-						$action = isset($item['action']) ? 'action="'.$item['action'].'"' : ''; 
-						$r = "<form $action>" . $r;
-						$q = '</form>';
-						
-					}
-				}				
 			}
-			$r .= '</ul>';
-			if($wrapper) $r .= '</div class="'.$wrapper.'">';
+			$r = Html::tag('ul', $r, ['class' => "umenu $menuclass"]);
+			if($wrapper) $r = Html::tag('div', $r, ['class'=>$wrapper]);
+			// Form wrapper
+			if(isset($menu['form'])) {
+				$options = [];
+				if(isset($item['action'])) $options['action'] = $item['action']; 
+				$r = Html::tag('form', $r, $options);
+			}
 		}
-		return $r . $q;
+		return $r;
 	}
 	
 	static public function iconItem($icon) {
 		if($icon=='') return '';
 		if(substr($icon, 0, 10)=='glyphicon-') 
-			$iconx = '<span class="glyphicon '.$icon.'"></span>';
+			$iconx = Html::tag('span', '', ['class'=>"glyphicon $icon"]);
 		else if(substr($icon, 0, 3)=='fa-') 
-			$iconx = '<i class="fa '.$icon.'"></i>';
+			$iconx = Html::tag('i', '', ['class'=>"fa $icon"]);
 		else 
 			$iconx = '<img class="icon" src="/img/'.$icon.'" />';
 		return $iconx;

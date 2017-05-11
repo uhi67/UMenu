@@ -52,9 +52,10 @@ $(function() {
 	// Updates context-menu 'group' items on selection change
 	var $grid = $('.grid.context-menu');
 	$('input[name="selection_all"], input[name="selection[]"]', $grid).change(function() {
+		var $grid = $(this).closest('.grid.context-menu');
 		console.log('update contex-menu visibility');
 		var keys = $grid.yiiGridView('getSelectedRows');
-		var $groupitems = $grid.parent().parent().find('.context-menu li.group');
+		var $groupitems = $grid.closest('form').find('.context-menu li.group');
 		if(keys.length) $groupitems.show(); else $groupitems.hide();
 	});
 	

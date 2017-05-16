@@ -78,7 +78,7 @@ $(function() {
 	
 	// Open input row (gridview footer)
 	$('.footer-form-show').click(function() {
-		console.log('show footer form');
+		//console.log('show footer form');
 		var $button = $(this);
 		var $trfoot = $('.table tfoot tr', $button.closest('form')); 
 		$trfoot.show();

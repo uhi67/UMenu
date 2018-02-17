@@ -2,7 +2,7 @@
     "name": "uhi67/umenu",
     "description": "Universal menu for Yii2",
     "type": "yii2-extension",
-    "license": "GNU",
+    "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "uhi67",

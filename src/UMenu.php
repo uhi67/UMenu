@@ -2,7 +2,7 @@
 
 namespace uhi67\umenu;
 
-use yii\base\Object;
+use yii\base\BaseObject;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
@@ -11,8 +11,8 @@ use yii\helpers\Html;
  *		- embedded input fields
  * 		- context menu
  */
-class UMenu extends Object {
-	
+class UMenu extends BaseObject {
+
     /**
      * @var array list of menu items. Each menu item should be an array of the following structure:
 	 * 			caption: caption text os item (after icon is exists)
@@ -37,21 +37,21 @@ class UMenu extends Object {
 	public $items = [];
 	/**
 	 * @var $options array The HTML attributes for the menu's ul tag
-	 */ 
+	 */
 	public $options;
 	/**
 	 * @var $options array The HTML attributes for the wrapper div tag
-	 */ 
+	 */
 	public $wrapperOptions;
-	
+
 	public function render() {
-		self::showMenu($this->items, ArrayHelper::getValue($options, 'class'), ArrayHelper::getValue($wrapperOptions, 'class'));
+		self::showMenu($this->items, ArrayHelper::getValue($this->options, 'class'), ArrayHelper::getValue($this->wrapperOptions, 'class'));
 	}
-	
+
 	/**
 	 * Renders a menu
-	 * 
-	 * @param array $menu [['caption'=>caption, 'action'=>url],...] see $item property of class for details 
+	 *
+	 * @param array $menu [['caption'=>caption, 'action'=>url],...] see $item property of class for details
 	 * @param string $class -- class of ul (default is 'menu')
 	 * @param string $wrapper -- class of wrapper div if given, default no wrapper at all.
 	 * @return string
@@ -79,7 +79,7 @@ class UMenu extends Object {
 					$disposable = ArrayHelper::getValue($item, 'disposable', $action!='');
 
 					if(!$visible) continue;
-					
+
 					$liclass = array();
 					if($i==0) $liclass = ['first'];
 					if($i==$last) $liclass[] = 'last';
@@ -87,7 +87,7 @@ class UMenu extends Object {
 					if($group) $liclass[] = 'group';
 
 					$confirmx = $confirm ? "if(!confirm('$confirm')) return false; " : '';
-					
+
 					$options = [];
 					if(isset($item['title'])) $options['title'] = $item['title'];
 					if(is_array($class)) $class = implode(' ', $class);
@@ -96,9 +96,9 @@ class UMenu extends Object {
 					if($class) $options['class'] .= ' '.$class;
 					if(is_array($data)) foreach($data as $k=>$v) $options['data-'.$k] = $v;
 					if($group) $options['data-group'] = $group;
-					
+
 					$iconx = self::iconItem($icon);
-					
+
 					if($display=='input') {
 						$liclass[] = 'form form-input';
 						if($disabled) $options['disabled']='disabled';
@@ -117,24 +117,24 @@ class UMenu extends Object {
 					elseif($disabled) {
 						$s = Html::tag('span', $iconx.$caption, $options);
 					}
-					else { // Normál menupont
+					else { // NormÃ¡l menupont
 						if(substr($action, 0, 11)=='javascript:') {
 							$options['onclick'] = $confirmx.substr($action,11);
-							$s = Html::tag('span', $iconx.$caption, $options); 
+							$s = Html::tag('span', $iconx.$caption, $options);
 						}
 						else {
-							if($confirm) $options['onclick'] = "confirm('$confirm')"; 
+							if($confirm) $options['onclick'] = "confirm('$confirm')";
 							$s = Html::a($iconx.$caption, $action, $options);
 						}
 					}
-					
+
 					if($items) {
 						$s .= self::showMenu($items, 'dropdown');
 					}
 
 					$lioptions = [];
 					if(count($liclass)) $lioptions['class'] = implode(' ', $liclass);
-					if($group) $lioptions['style'] = "display:none";					
+					if($group) $lioptions['style'] = "display:none";
 					$r .= Html::tag('li', $s, $lioptions);
 				}
 			}
@@ -143,21 +143,21 @@ class UMenu extends Object {
 			// Form wrapper
 			if(isset($menu['form'])) {
 				$options = [];
-				if(isset($item['action'])) $options['action'] = $item['action']; 
+				if(isset($item['action'])) $options['action'] = $item['action'];
 				$r = Html::tag('form', $r, $options);
 			}
 		}
 		return $r;
 	}
-	
+
 	static public function iconItem($icon) {
 		if($icon=='') return '';
-		if(substr($icon, 0, 10)=='glyphicon-') 
+		if(substr($icon, 0, 10)=='glyphicon-')
 			$iconx = Html::tag('span', '', ['class'=>"glyphicon $icon"]);
-		else if(substr($icon, 0, 3)=='fa-') 
+		else if(substr($icon, 0, 3)=='fa-')
 			$iconx = Html::tag('i', '', ['class'=>"fa $icon"]);
-		else 
+		else
 			$iconx = '<img class="icon" src="/img/'.$icon.'" />';
 		return $iconx;
-	}	
+	}
 }

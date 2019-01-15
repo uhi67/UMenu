@@ -195,8 +195,17 @@ class UMenu extends BaseObject {
 				$subItems = null;
 			}
 			$url = ArrayHelper::getValue($item, 'action');
+			$caption = ArrayHelper::getValue($item, 'caption', '');
+			if($icon = ArrayHelper::getValue($item, 'icon')) {
+				if(substr($icon,0,3)=='fa-') {
+					$caption = "<i class='fa $icon'></i>" . $caption;
+				}
+				else {
+					$caption = "<img src='$icon' class='icon' />" . $caption;
+				}
+			}
 			$navItem = [
-				'label'=> ArrayHelper::getValue($item, 'caption'),
+				'label'=> $caption,
 				'url' => $url,
 			];
 			if($subItems) $navItem['items'] = $subItems;

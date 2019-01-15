@@ -2,6 +2,7 @@
 
 namespace uhi67\umenu;
 
+use Yii;
 use yii\base\BaseObject;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -10,30 +11,35 @@ use yii\helpers\Html;
  * UMenu -- universal menu with features:
  *		- embedded input fields
  * 		- context menu
+ *
+ * ## Structure of *items* property:
+ * ### menu item properties:
+ * - caption: caption text os item (after icon is exists)
+ * - icon: icon before or instead of caption (image filename or glyphicon-* or fa-*)
+ * - title: html title attribute
+ * - class: html class of __a__ or __span__. default is none.
+ * - action: url for <a> or javascript:function for <span>
+ * - enabled: if false, button is not clickable and gray. html class will contain "disabled". Default is true (enabled).
+ * - visible: boolean, default true
+ * - group: if not empty, button is visible only when selection is present in connected grid. The button will submit the form, and send this value.
+ * - display: input|button|normal(default)
+ * - name: name of embedded input field or submit button
+ * - value: value of embedded input field or submit button
+ * - confirm: if given, the text of confirmation before performing action
+ * - data: array of data-* items' values. data-action may be set as url for group button action
+ * - items: subitems of multilevel menu
+ * - disposable: disables itself on click (default on actions)
+ *
+ * ### Extra attributes of the menu itself (non-numeric indices)
+ *
+ * - form (boolean): the menu will be wrapped into form
+ * - action (string): the action of the form
+ *
+ * Not all properties are applied when used in bootstrap nav.
  */
 class UMenu extends BaseObject {
 
-    /**
-     * @var array list of menu items. Each menu item should be an array of the following structure:
-	 * 			caption: caption text os item (after icon is exists)
-	 * 			icon: icon before or instead of caption (image filename or glyphicon-* or fa-*)
-	 * 			title: html title attribute
-	 * 			class: html class of <a> or <span>. default is none.
-	 * 			action: url for <a> or javascript:function for <span>
-	 * 			enabled: if false, button is not clickable and gray. html class will contain "disabled". Default is true (enabled).
-	 * 			visible: boolean, default true
-	 * 			group: if not empty, button is visible only when selection is present in connected grid. The button will submit the form, and send this value.
-	 * 			display: input|button|normal(default)
-	 * 			name: name of embedded input field or submit button
-	 * 			value: value of embedded input field or submit button
-	 * 			confirm: if given, the text of confirmation before performing action
-	 * 			data: array of data-* items' values. data-action may be set as url for group button action
-	 * 			items: subitems of multilevel menu
-	 * 			disposable: disables itself on click (default on actions)
-	 * 	Extra attributes (non-numeric indices)
-	 * 		form (boolean): the menu will be wrapped into form
-	 * 		action (string): the action of the form
-     */
+    /** @var array -- list of menu items and menu options. {@see UMenu} */
 	public $items = [];
 	/**
 	 * @var $options array The HTML attributes for the menu's ul tag
@@ -160,4 +166,45 @@ class UMenu extends BaseObject {
 			$iconx = '<img class="icon" src="/img/'.$icon.'" />';
 		return $iconx;
 	}
+
+	/**
+	 * Returns data for bootstrap nav widget's items property
+	 * 
+	 * ## Usage in view:
+	 *
+	 * <?php NavBar::begin([...]); ?>
+	 * <?= Nav::widget([
+	 *     'options' => ['class' => 'navbar-nav navbar-right'],
+	 *     'items' => $menu->navItems(),
+	 * ]); ?>
+	 * <?php NavBar::end(); ?>
+	 *
+	 */
+	public function navItems($items = null) {
+		if($items === null) $items = $this->items;
+		return array_map(function($item, $index) {
+			if(is_string($item)) return $item;
+
+			if($subItems = ArrayHelper::getValue($item, 'items')) {
+				$subItems = $this->navItems($subItems);
+			}
+			$class = ArrayHelper::getValue($item, 'class', '');
+			if(!ArrayHelper::getValue($item, 'enabled', true)) {
+				$class .= ' disabled';
+				$url = '';
+				$subItems = null;
+			}
+			$url = ArrayHelper::getValue($item, 'action');
+			$navItem = [
+				'label'=> ArrayHelper::getValue($item, 'caption'),
+				'url' => $url,
+			];
+			if($subItems) $navItem['items'] = $subItems;
+			if(!ArrayHelper::getValue($item, 'visible', true)) $navItem['visible'] = false;
+			if($class) $navItem['linkOptions'] = ['class'=>$class];
+			foreach(ArrayHelper::getValue($item, 'data', []) as $k=>$v) $navItem['linkOptions']['data-'.$k] = $v;
+			return $navItem;
+		}, array_values($items), array_keys($items));
+	}
+
 }

@@ -1,0 +1,114 @@
+/* --------------------
+	umenu.less
+----------------------- */
+.listbutton {
+  padding: 3px;
+  background-color: #002244;
+  color: #eee;
+  margin-top: 2px;
+  max-width: 160px;
+}
+.listbutton a {
+  background-color: inherit;
+  color: inherit;
+  text-decoration: none;
+}
+.listbutton:hover {
+  /* disabled elõtt - nem mindegy */
+  background-color: #004891;
+  color: #fff;
+}
+.listbutton.disabled {
+  background-color: #666;
+  color: #888;
+}
+.listbutton.disabled a {
+  cursor: text;
+}
+.listbutton.disabled span.glyphicon {
+  color: #aaa;
+  cursor: text;
+  background-color: #666;
+}
+ul.menu li {
+  padding: 3px;
+  background-color: #002244;
+  color: #eee;
+  margin-top: 2px;
+  max-width: 160px;
+}
+ul.menu li a {
+  background-color: inherit;
+  color: inherit;
+  text-decoration: none;
+}
+ul.menu li:hover {
+  /* disabled elõtt - nem mindegy */
+  background-color: #004891;
+  color: #fff;
+}
+ul.menu li.disabled {
+  background-color: #666;
+  color: #888;
+}
+ul.menu li.disabled a {
+  cursor: text;
+}
+ul.menu li.disabled span.glyphicon {
+  color: #aaa;
+  cursor: text;
+  background-color: #666;
+}
+dl.menu {
+  margin-bottom: 4px;
+}
+dl.menu dt {
+  font-size: 1.1em;
+  padding: 3px;
+  background-color: #002244;
+  color: #eee;
+  margin-top: 2px;
+  max-width: 160px;
+}
+dl.menu dt a {
+  background-color: inherit;
+  color: inherit;
+  text-decoration: none;
+}
+dl.menu dt:hover {
+  /* disabled elõtt - nem mindegy */
+  background-color: #004891;
+  color: #fff;
+}
+dl.menu dt.disabled {
+  background-color: #666;
+  color: #888;
+}
+dl.menu dt.disabled a {
+  cursor: text;
+}
+dl.menu dt.disabled span.glyphicon {
+  color: #aaa;
+  cursor: text;
+  background-color: #666;
+}
+dl.menu dd {
+  font-size: 1em;
+  font-style: normal;
+  margin-bottom: 5px;
+}
+button.footer-form-close {
+  margin-left: 0px;
+}
+ul.umenu.dropdown li {
+  float: none;
+}
+ul.umenu.dropdown li a,
+ul.umenu.dropdown li span {
+  display: inline-block;
+}
+nav.navbar ul li a i.fa,
+nav.navbar ul li a img.icon {
+  margin-right: 4px;
+}
+/*# sourceMappingURL=umenu.css.map */

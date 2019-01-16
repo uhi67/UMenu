@@ -210,7 +210,7 @@ class UMenu extends BaseObject {
 			];
 			if($subItems) $navItem['items'] = $subItems;
 			if(!ArrayHelper::getValue($item, 'visible', true)) $navItem['visible'] = false;
-			if($class) $navItem['linkOptions'] = ['class'=>$class];
+			if($class) $navItem['options'] = ['class'=>$class];
 			foreach(ArrayHelper::getValue($item, 'data', []) as $k=>$v) $navItem['linkOptions']['data-'.$k] = $v;
 			return $navItem;
 		}, array_values($items), array_keys($items));
